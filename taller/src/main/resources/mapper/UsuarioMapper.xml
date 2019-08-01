@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="uy.edu.cei.taller.dao.UsuarioMapper">
+
+	<select id="selectAll"
+		resultType="uy.edu.cei.taller.bean.UsuarioBean">
+		SELECT * FROM USUARIOS
+	</select>
+
+	<select id="selectByNombreUsuario"
+		resultType="uy.edu.cei.taller.bean.UsuarioBean">
+		SELECT * FROM USUARIOS WHERE nombreUsuario=#{nombreUsuario}
+	</select>
+	
+	<select id="selectById"
+		resultType="uy.edu.cei.taller.bean.UsuarioBean">
+		SELECT * FROM USUARIOS WHERE id=#{id}
+	</select>
+
+	<insert id="insert">
+		insert into USUARIOS
+		(nombreUsuario,contraseña,email,idRol,verificado)
+		values
+			<if test="usuario.verificado!=null">
+			(#{usuario.nombreUsuario},#{usuario.contraseña},#{usuario.email},#{usuario.idRol},#{usuario.verificado})
+			</if>
+			<if test="usuario.verificado==null">
+			(#{usuario.nombreUsuario},#{usuario.contraseña},#{usuario.email},#{usuario.idRol},false)
+			</if>
+		
+	</insert>
+
+
+	<update id="updateByIdOrNombreUsuario">
+		UPDATE USUARIOS
+		<set>
+			<if test="usuario.nombreUsuario!=null and usuario.nombreUsuario!='' ">
+				nombreUsuario = #{usuario.nombreUsuario},
+			</if>
+			<if test="usuario.contraseña!=null and usuario.contraseña!='' ">
+				contraseña = #{usuario.contraseña},
+			</if>
+			<if test="usuario.email!=null and usuario.email!='' ">
+				email = #{usuario.email},
+			</if>
+			<if test="usuario.idRol!=null and usuario.idRol!='' ">
+				idRol = #{usuario.idRol},
+			</if>
+			<if test="usuario.ubicacion!=null and usuario.ubicacion!='' ">
+				ubicacion = #{usuario.ubicacion},
+			</if>
+			<if test="usuario.activo!=null and usuario.activo!='' ">
+				activo = #{usuario.activo},
+			</if>
+			<if test="usuario.valoracion!=null and usuario.valoracion!='' ">
+				valoracion = #{usuario.valoracion},
+			</if>
+			<if test="usuario.verificado!=null and usuario.verificado!='' ">
+				verificado = #{usuario.verificado},
+			</if>
+			<if test="usuario.connId!=null and usuario.connId!='' ">
+				connId = #{usuario.connId},
+			</if>
+			<if test="usuario.verificado!=null and usuario.verificado!='' ">
+				verificado = #{usuario.verificado},
+			</if>
+		</set>
+		WHERE id = #{usuario.id} or nombreUsuario = #{usuario.nombreUsuario};
+	</update>
+
+	<delete id="deleteByNombreUsuario">
+		delete from USUARIOS where nombreUsuario =
+		#{nombreUsuario}
+	</delete>
+	<delete id="deleteById">
+		delete from USUARIOS where id = #{id}
+	</delete>
+</mapper>
